@@ -1,10 +1,14 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: university-chatbot-ui
-  namespace: qa
+  namespace: production
 spec:
   replicas: 2
+  strategy:
+    blueGreen:
+      activeService: university-chatbot-ui-active
+      previewService: university-chatbot-ui-preview
   selector:
     matchLabels:
       app: university-chatbot-ui
@@ -13,40 +17,56 @@ spec:
       labels:
         app: university-chatbot-ui
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: ip-10-0-3-151.ec2.internal
+        subnet-type: private
       containers:
-      - name: university-chatbot-ui
-        image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:e632a6165230c4493e5569589cc1efb448071023
-        ports:
-        - containerPort: 3000
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "256Mi"
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
+        - name: university-chatbot-ui
+          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:e632a6165230c4493e5569589cc1efb448071023
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: university-chatbot-ui
-  namespace: qa
+  name: university-chatbot-ui-active
+  namespace: production
 spec:
   selector:
     app: university-chatbot-ui
   ports:
-  - port: 3000
-    targetPort: 3000
+    - port: 3000
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: university-chatbot-ui-preview
+  namespace: production
+spec:
+  selector:
+    app: university-chatbot-ui
+  ports:
+    - port: 3000
+      targetPort: 3000
   type: ClusterIP 
