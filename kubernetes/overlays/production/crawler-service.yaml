@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: crawler-service
-  namespace: qa
+  namespace: production
 spec:
   replicas: 2
   selector:
@@ -17,7 +17,7 @@ spec:
       - name: crawler-service
         image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/crawler-service:c1376203a1de118f815dde560fd2d99e5f50ecbd
         ports:
-        - containerPort: 8080
+        - containerPort: 8084
         resources:
           requests:
             cpu: "100m"
@@ -28,13 +28,13 @@ spec:
         livenessProbe:
           httpGet:
             path: /actuator/health
-            port: 8080
+            port: 8084
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /actuator/health
-            port: 8080
+            port: 8084
           initialDelaySeconds: 30
           periodSeconds: 10
 ---
@@ -47,6 +47,6 @@ spec:
   selector:
     app: crawler-service
   ports:
-  - port: 8080
-    targetPort: 8080
+  - port: 8084
+    targetPort: 8084
   type: ClusterIP 
