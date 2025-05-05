@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-service
+  namespace: qa
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chat-service
+  template:
+    metadata:
+      labels:
+        app: chat-service
+    spec:
+      containers:
+      - name: chat-service
+        image: <ecr-registry>/student-support/chat-service:<tag>
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-service
+  namespace: qa
+spec:
+  selector:
+    app: chat-service
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP 

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: university-chatbot-ui
+  namespace: qa
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: university-chatbot-ui
+  template:
+    metadata:
+      labels:
+        app: university-chatbot-ui
+    spec:
+      containers:
+      - name: university-chatbot-ui
+        image: <ecr-registry>/student-support/university-chatbot-ui:<tag>
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: university-chatbot-ui
+  namespace: qa
+spec:
+  selector:
+    app: university-chatbot-ui
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: ClusterIP 

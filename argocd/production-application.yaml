@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: student-support-production
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zmehta2/infra-repo.git
+    targetRevision: main
+    path: kubernetes/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas 
