@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: faq-service
-        image: <ecr-registry>/student-support/faq-service:<tag>
+        image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/faq-service:e0368900c0a4618386583526c3dfa302a81211c3
         ports:
         - containerPort: 8080
         resources:

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: <ecr-registry>/student-support/api-gateway:<tag>
+        image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/api-gateway:e0368900c0a4618386583526c3dfa302a81211c3
         ports:
         - containerPort: 8080
         resources:

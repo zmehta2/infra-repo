@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: university-chatbot-ui
-        image: <ecr-registry>/student-support/university-chatbot-ui:<tag>
+        image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:e0368900c0a4618386583526c3dfa302a81211c3
         ports:
         - containerPort: 3000
         resources:
