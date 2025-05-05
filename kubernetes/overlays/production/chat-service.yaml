@@ -30,14 +30,16 @@ spec:
               cpu: "500m"
               memory: "512Mi"
           livenessProbe:
-            tcpSocket:
-              port: 8081
-            initialDelaySeconds: 60
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
             periodSeconds: 10
-          startupProbe:
-            tcpSocket:
-              port: 8081
-            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
             periodSeconds: 10
 ---
 apiVersion: v1
