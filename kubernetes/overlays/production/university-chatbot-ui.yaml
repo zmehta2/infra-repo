@@ -17,9 +17,6 @@ spec:
       labels:
         app: university-chatbot-ui
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: ip-10-0-3-151.ec2.internal
-        subnet-type: private
       containers:
         - name: university-chatbot-ui
           image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:v0.1.1-qa

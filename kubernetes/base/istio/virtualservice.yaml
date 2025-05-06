@@ -1,0 +1,48 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: student-chatbot-virtualservice
+  namespace: production
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - student-chatbot-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /api/chat-history
+      route:
+        - destination:
+            host: chat-service.production.svc.cluster.local
+            port:
+              number: 8081
+
+    - match:
+        - uri:
+            prefix: /api/university/faqs
+        - uri:
+            prefix: /api/university/quick-replies
+      route:
+        - destination:
+            host: faq-service.production.svc.cluster.local
+            port:
+              number: 8082
+
+    - match:
+        - uri:
+            prefix: /api/university/crawl
+      route:
+        - destination:
+            host: crawler-service.production.svc.cluster.local
+            port:
+              number: 8084
+
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: university-chatbot-ui.production.svc.cluster.local
+            port:
+              number: 3000
