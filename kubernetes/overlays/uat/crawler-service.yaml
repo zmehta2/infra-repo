@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawler-service
+  namespace: production
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: crawler-service
+  template:
+    metadata:
+      labels:
+        app: crawler-service
+    spec:
+      containers:
+      - name: crawler-service
+        image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/crawler-service:c1376203a1de118f815dde560fd2d99e5f50ecbd
+        ports:
+        - containerPort: 8084
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crawler-service
+  namespace: qa
+spec:
+  selector:
+    app: crawler-service
+  ports:
+  - port: 8084
+    targetPort: 8084
+  type: ClusterIP 
