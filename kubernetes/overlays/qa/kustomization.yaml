@@ -8,4 +8,4 @@ resources:
   - crawler-service.yaml
   - university-chatbot-ui.yaml
 
-namespace: production
+namespace: qa
