@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: chat-service
-          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/chat-service:c1376203a1de118f815dde560fd2d99e5f50ecbd
+          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/chat-service:f5e6346c8f8dc8a9f6eb4757ed9eac205eca1d5b
           ports:
             - containerPort: 8081  # Updated to match application port
           resources:
