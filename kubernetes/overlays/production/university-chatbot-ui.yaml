@@ -18,8 +18,6 @@ spec:
     metadata:
       labels:
         app: university-chatbot-ui
-      annotations:
-        sidecar.istio.io/rewriteAppHTTPProbers: "true"  # Ensures Istio handles probes correctly
     spec:
       containers:
         - name: university-chatbot-ui
