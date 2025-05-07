@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: chat-service
-          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/chat-service:vmanual-qa
+          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/chat-service:vmanual-qav
           ports:
             - containerPort: 8081  # Updated to match application port
           resources:
