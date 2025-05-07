@@ -1,0 +1,56 @@
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: university-chatbot
+  namespace: production
+spec:
+  provider: istio
+  # Target the new version
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: university-chatbot
+  # This is important for blue-green
+  progressDeadlineSeconds: 600
+  service:
+    # Configure the service ports
+    port: 3000
+    targetPort: 3000
+    # This enables blue-green mode
+    trafficPolicy:
+      tls:
+        mode: DISABLE
+  # Keep both versions running by using a separate service for testing
+  analysis:
+    # The deployment strategy
+    strategy: BlueGreen
+    interval: 30s
+    threshold: 5
+    # Configure weight-based traffic shifting (not incremental for blue-green)
+    maxWeight: 100
+    stepWeight: 100 # Full switch at once for blue-green
+    metrics:
+      - name: request-success-rate
+        thresholdRange:
+          min: 99
+        interval: 1m
+      - name: request-duration
+        thresholdRange:
+          max: 500
+        interval: 1m
+    # Define how long to keep the old version running after successful promotion
+    webhooks:
+      - name: "pre rollout hook"
+        type: pre-rollout
+        url: http://flagger-loadtester.test/
+        timeout: 30s
+        metadata:
+          type: bash
+          cmd: "curl -s http://university-chatbot-preview/health | grep -q 'OK'"
+      - name: "post rollout hook"
+        type: post-rollout
+        url: http://flagger-loadtester.test/
+        timeout: 30s
+        metadata:
+          type: bash
+          cmd: "curl -s http://university-chatbot-primary/health | grep -q 'OK'"
