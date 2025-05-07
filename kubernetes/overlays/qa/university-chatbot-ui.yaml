@@ -22,7 +22,7 @@ spec:
         subnet-type: private
       containers:
         - name: university-chatbot-ui
-          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:v0.1.1-qa
+          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:v1.0.0-qa
           ports:
             - containerPort: 3000
           resources:
