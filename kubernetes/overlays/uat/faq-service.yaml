@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: faq-service
-  namespace: production
+  namespace: dev
 spec:
   replicas: 2
   strategy:

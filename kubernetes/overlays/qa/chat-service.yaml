@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: chat-service
-  namespace: production
+  namespace: chatbot
 spec:
   replicas: 1
   strategy:
