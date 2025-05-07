@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: crawler-service
-        image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/crawler-service:vmanual-qav
+        image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/crawler-service:qa-v0.0.2
         ports:
         - containerPort: 8084
         resources:

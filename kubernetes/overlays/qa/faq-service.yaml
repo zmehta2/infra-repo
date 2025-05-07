@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: faq-service
-          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/faq-service:vmanual-qav
+          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/faq-service:qa-v0.0.2
           ports:
             - containerPort: 8082
           resources:
