@@ -4,7 +4,7 @@ metadata:
   name: university-chatbot-ui
   namespace: production
 spec:
-  replicas: 2
+  replicas: 1
 #  strategy:
 #    blueGreen:
 #      activeService: university-chatbot-ui-active
@@ -55,15 +55,15 @@ spec:
       targetPort: 3000
   type: ClusterIP
 ---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: university-chatbot-ui-preview
-#  namespace: production
-#spec:
-#  selector:
-#    app: university-chatbot-ui
-#  ports:
-#    - port: 3000
-#      targetPort: 3000
-#  type: ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: university-chatbot-ui-preview
+  namespace: production
+spec:
+  selector:
+    app: university-chatbot-ui
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: ClusterIP
