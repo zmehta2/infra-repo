@@ -1,11 +1,16 @@
-# Replace Argo Rollout with standard Kubernetes Deployment
-apiVersion: apps/v1
-kind: Deployment
+# Convert from Deployment to Rollout
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: university-chatbot-ui
   namespace: production
 spec:
   replicas: 1
+  strategy:
+    blueGreen:
+      activeService: university-chatbot-ui-active
+      previewService: university-chatbot-ui-preview
+      autoPromotionEnabled: true
   selector:
     matchLabels:
       app: university-chatbot-ui
@@ -38,8 +43,8 @@ spec:
               port: 3000
             initialDelaySeconds: 30
             periodSeconds: 10
+
 ---
-# Keep your services as they are
 apiVersion: v1
 kind: Service
 metadata:
