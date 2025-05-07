@@ -9,7 +9,7 @@ spec:
     blueGreen:
       activeService: chat-service-active
       previewService: chat-service-preview
-      autoPromotionSeconds: false
+      autoPromotionSeconds: 60
   selector:
     matchLabels:
       app: chat-service

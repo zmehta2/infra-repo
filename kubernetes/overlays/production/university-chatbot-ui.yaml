@@ -10,7 +10,7 @@ spec:
     blueGreen:
       activeService: university-chatbot-ui-active
       previewService: university-chatbot-ui-preview
-      autoPromotionSeconds: false
+      autoPromotionSeconds: 60
   selector:
     matchLabels:
       app: university-chatbot-ui
