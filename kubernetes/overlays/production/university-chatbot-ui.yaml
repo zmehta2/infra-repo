@@ -5,10 +5,10 @@ metadata:
   namespace: production
 spec:
   replicas: 1
-#  strategy:
-#    blueGreen:
-#      activeService: university-chatbot-ui-active
-#      previewService: university-chatbot-ui-preview
+  strategy:
+    blueGreen:
+      activeService: university-chatbot-ui-active
+      previewService: university-chatbot-ui-preview
   selector:
     matchLabels:
       app: university-chatbot-ui
