@@ -1,4 +1,4 @@
-# Convert from Deployment to Rollout
+# Improved blue-green Rollout configuration
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -6,11 +6,18 @@ metadata:
   namespace: production
 spec:
   replicas: 1
+  revisionHistoryLimit: 2  # Keep history for rollback
   strategy:
     blueGreen:
+      # Reference the services
       activeService: university-chatbot-ui-active
       previewService: university-chatbot-ui-preview
-      autoPromotionSeconds: 60
+      # Add these parameters for better blue-green visibility
+      autoPromotionEnabled: false  # Disable auto-promotion for demo purposes
+      scaleDownDelaySeconds: 300   # Keep old version around for 5 minutes after promotion
+      previewReplicaCount: 1       # Ensure preview has replicas for visualization
+      antiAffinity:                # Try to schedule blue and green on different nodes
+        preferredDuringSchedulingIgnoredDuringExecution: true
   selector:
     matchLabels:
       app: university-chatbot-ui
@@ -18,12 +25,20 @@ spec:
     metadata:
       labels:
         app: university-chatbot-ui
+        # Add this version label for better visualization in Kiali
+        version: "{{ .Values.image.tag }}"
     spec:
       containers:
         - name: university-chatbot-ui
           image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:v2.0.0
           ports:
             - containerPort: 3000
+          env:
+            # Add environment variables to make blue/green versions visually distinct
+            - name: DEPLOYMENT_VERSION
+              value: "{{ .Values.image.tag }}"
+            - name: UI_COLOR
+              value: "{{ if eq .Values.image.tag 'v2.0.0' }}blue{{ else }}green{{ end }}"
           resources:
             requests:
               cpu: "100m"
@@ -44,6 +59,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
 ---
+# Services remain the same
 apiVersion: v1
 kind: Service
 metadata:
