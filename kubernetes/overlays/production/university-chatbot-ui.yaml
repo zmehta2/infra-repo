@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         app: university-chatbot-ui
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"  # Ensures Istio handles probes correctly
     spec:
       containers:
         - name: university-chatbot-ui
@@ -31,19 +33,18 @@ spec:
             limits:
               cpu: "500m"
               memory: "512Mi"
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 30
-            periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /health
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
               port: 3000
             initialDelaySeconds: 30
             periodSeconds: 10
-
 ---
 apiVersion: v1
 kind: Service

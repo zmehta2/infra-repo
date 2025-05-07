@@ -1,5 +1,5 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+kind: Deployment
 metadata:
   name: chat-service
   namespace: production
@@ -29,18 +29,18 @@ spec:
             limits:
               cpu: "500m"
               memory: "512Mi"
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8081
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8081
-            initialDelaySeconds: 30
-            periodSeconds: 10
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8081
+#            initialDelaySeconds: 30
+#            periodSeconds: 10
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8081
+#            initialDelaySeconds: 30
+#            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
