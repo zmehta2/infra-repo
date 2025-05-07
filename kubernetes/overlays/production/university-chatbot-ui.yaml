@@ -5,10 +5,10 @@ metadata:
   namespace: production
 spec:
   replicas: 2
-  strategy:
-    blueGreen:
-      activeService: university-chatbot-ui-active
-      previewService: university-chatbot-ui-preview
+#  strategy:
+#    blueGreen:
+#      activeService: university-chatbot-ui-active
+#      previewService: university-chatbot-ui-preview
   selector:
     matchLabels:
       app: university-chatbot-ui
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: university-chatbot-ui
-          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:v0.1.1-qa
+          image: 465776424604.dkr.ecr.us-east-1.amazonaws.com/student-support/university-chatbot-ui:vmanual-qa
           ports:
             - containerPort: 3000
           resources:
@@ -55,15 +55,15 @@ spec:
       targetPort: 3000
   type: ClusterIP
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: university-chatbot-ui-preview
-  namespace: production
-spec:
-  selector:
-    app: university-chatbot-ui
-  ports:
-    - port: 3000
-      targetPort: 3000
-  type: ClusterIP 
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: university-chatbot-ui-preview
+#  namespace: production
+#spec:
+#  selector:
+#    app: university-chatbot-ui
+#  ports:
+#    - port: 3000
+#      targetPort: 3000
+#  type: ClusterIP
