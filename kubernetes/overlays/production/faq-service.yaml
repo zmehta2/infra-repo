@@ -9,6 +9,7 @@ spec:
     blueGreen:
       activeService: faq-service
       previewService: faq-service-preview
+      autoPromotionSeconds: false
   selector:
     matchLabels:
       app: faq-service

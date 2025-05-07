@@ -1,5 +1,5 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Deployment
+kind: Rollout
 metadata:
   name: chat-service
   namespace: production
@@ -7,8 +7,9 @@ spec:
   replicas: 1
   strategy:
     blueGreen:
-      activeService: chat-service
+      activeService: chat-service-active
       previewService: chat-service-preview
+      autoPromotionSeconds: false
   selector:
     matchLabels:
       app: chat-service
@@ -45,7 +46,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: chat-service
+  name: chat-service-active
   namespace: production
 spec:
   selector:
